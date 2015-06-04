@@ -12,8 +12,8 @@ private:
     int x;
     int y;
     int cur_frame;
-public:
     ImageData *img_data;
+public:
 
     Image(ImageData *img_data, int x, int y);
 
@@ -25,6 +25,17 @@ public:
     int get_y();
 
     int get_cur_frame();
+
+    // Access to the underlying ImageData
+    int get_frame_width();
+
+    int get_frame_height();
+
+    const std::string *get_path();
+
+    int get_img_width();
+
+    int get_img_height();
 
     //Setters:
     void set_x(int x);

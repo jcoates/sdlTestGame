@@ -5,22 +5,22 @@
 
 #include "image_data.h"
 
-ImageData::ImageData(std::string image, int w, int h) : image(image),
-                                                        img_width(w),
-                                                        img_height(h),
-                                                        num_frames(1),
-                                                        frame_width(w),
-                                                        frame_height(h) { }
+ImageData::ImageData(std::string p, int w, int h) : path(p),
+                                                    img_width(w),
+                                                    img_height(h),
+                                                    num_frames(1),
+                                                    frame_width(w),
+                                                    frame_height(h) { }
 
-ImageData::ImageData(std::string image, int w, int h, int num_f, int frame_w, int frame_h) : image(image),
-                                                                                             img_width(w),
-                                                                                             img_height(h),
-                                                                                             num_frames(num_f),
-                                                                                             frame_width(frame_w),
-                                                                                             frame_height(frame_h) { }
+ImageData::ImageData(std::string p, int w, int h, int num_f, int frame_w, int frame_h) : path(p),
+                                                                                         img_width(w),
+                                                                                         img_height(h),
+                                                                                         num_frames(num_f),
+                                                                                         frame_width(frame_w),
+                                                                                         frame_height(frame_h) { }
 
-const std::string ImageData::get_image() {
-    return image;
+const std::string *ImageData::get_path() {
+    return &path;
 }
 
 const int ImageData::get_img_width() {

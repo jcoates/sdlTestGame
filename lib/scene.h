@@ -15,7 +15,7 @@ private:
 public:
     Scene(Image bg);
     Scene(Image bg, std::list<Image> imgs);
-    Image get_bg();
+    Image* get_bg();
     std::list<Image> *get_imgs();
     void add_image(Image new_img);
     void set_imgs(std::list<Image> imgs);

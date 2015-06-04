@@ -51,21 +51,21 @@ void SDLGraphics::draw_scene(Scene &scene) {
     SDL_RenderClear(gRenderer);
 
     //Set up background
-    SDL_Texture *loading_tex = load_texture(scene.get_bg().img_data->get_image());
+    SDL_Texture *loading_tex = load_texture(*scene.get_bg()->get_path());
     SDL_RenderCopy(gRenderer, loading_tex, NULL, NULL);
 
     //Set up images on top of background
     for (std::list<Image>::iterator it = scene.get_imgs()->begin(); it != scene.get_imgs()->end(); it++) {
         //Where to copy image from
         SDL_Rect *src;
-        int frames_in_row = it->img_data->get_img_width() / it->img_data->get_frame_width();
-        int theoretical_x = it->get_cur_frame() * it->img_data->get_frame_width();
+        int frames_in_row = it->get_img_width() / it->get_frame_width();
+        int theoretical_x = it->get_cur_frame() * it->get_frame_width();
         int frame_row = theoretical_x / frames_in_row;
         int frame_col = theoretical_x % frame_row;
         src->x = frame_col;
-        src->y = frame_row * it->img_data->get_frame_height();
-        src->w = it->img_data->get_frame_width();
-        src->h = it->img_data->get_frame_height();
+        src->y = frame_row * it->get_frame_height();
+        src->w = it->get_frame_width();
+        src->h = it->get_frame_height();
 
         //Where to draw image
         SDL_Rect *dst;
@@ -73,7 +73,7 @@ void SDLGraphics::draw_scene(Scene &scene) {
         dst->y = it->get_y();
 
         //Load image
-        loading_tex = load_texture(it->img_data->get_image());
+        loading_tex = load_texture(*it->get_path());
 
         //Copy image to "canvas"
         SDL_RenderCopy(gRenderer, loading_tex, src, dst);

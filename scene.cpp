@@ -9,8 +9,8 @@ Scene::Scene(Image bg) : background(bg) { }
 
 Scene::Scene(Image bg, std::list<Image> imgs) : background(bg), images(imgs) { }
 
-Image Scene::get_bg() {
-    return background;
+Image *Scene::get_bg() {
+    return &background;
 }
 
 std::list<Image> *Scene::get_imgs() {

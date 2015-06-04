@@ -32,6 +32,27 @@ int Image::get_cur_frame() {
     return cur_frame;
 }
 
+//Access to underlying ImageData
+int Image::get_frame_width() {
+    return img_data->get_frame_width();
+}
+
+int Image::get_frame_height() {
+    return img_data->get_frame_height();
+}
+
+const std::string *Image::get_path() {
+    return img_data->get_path();
+}
+
+int Image::get_img_width() {
+    return img_data->get_img_width();
+}
+
+int Image::get_img_height() {
+    return img_data->get_img_height();
+}
+
 //Setters:
 void Image::set_x(int x) {
     x = x;

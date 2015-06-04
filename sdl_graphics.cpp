@@ -57,6 +57,7 @@ void SDLGraphics::draw_scene(Scene &scene) {
     //Set up images on top of background
     for (std::list<Image>::iterator it = scene.get_imgs()->begin(); it != scene.get_imgs()->end(); it++) {
         //Where to copy image from
+        //TODO: Consider moving this somewhere else.
         SDL_Rect *src;
         int frames_in_row = it->get_img_width() / it->get_frame_width();
         int theoretical_x = it->get_cur_frame() * it->get_frame_width();

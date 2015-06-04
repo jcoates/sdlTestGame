@@ -124,7 +124,3 @@ SDL_Texture *SDLGraphics::load_texture(std::string path) {
 
     return tex;
 }
-
-void SDLGraphics::free_surface(SDL_Surface &s) {
-    SDL_FreeSurface(&s);
-}

@@ -17,6 +17,15 @@ private:
     SDL_Renderer *gRenderer;
     int SCREEN_WIDTH;
     int SCREEN_HEIGHT;
+
+    /**
+     * loads an image to a texture
+     *
+     * @arg path the path to the image to load
+     * @retval the pointer to the image, or null if the load failed
+     */
+    SDL_Texture *load_texture(std::string path);
+
 public:
     /**
      * initializes the graphics engine.
@@ -36,21 +45,6 @@ public:
      * shuts down the graphics engine.
      */
     void shutdown();
-
-    /**
-     * loads an image to a texture
-     *
-     * @arg path the path to the image to load
-     * @retval the pointer to the image, or null if the load failed
-     */
-    SDL_Texture *load_texture(std::string path);
-
-    /**
-     * frees a provided surface
-     *
-     * @arg s the surface to be freed
-     */
-    void free_surface(SDL_Surface &s);
 };
 
 #endif //TESTSTRUCTUREDGAME_GRAPHICS_H

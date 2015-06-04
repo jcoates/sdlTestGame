@@ -15,7 +15,14 @@ int main() {
     //TODO: try putting ImageData as a const into a separate file
     ImageData ex_menu = ImageData("res/ex_menu.png", 320, 240);
     Image background = Image(&ex_menu, 0, 0);
+
+    ImageData ex_setting = ImageData("res/settings_trans.png", 160, 50);
+    Image button = Image(&ex_setting, 80, 180);
+
     Scene exs = Scene(background);
+    exs.add_image(button);
+
+
 
     //TODO: Move game running stuff into a separate place
     //Mock up a game loop

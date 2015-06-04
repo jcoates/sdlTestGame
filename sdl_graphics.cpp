@@ -7,8 +7,8 @@
 
 bool SDLGraphics::init() {
     //Initialize screen size
-    SCREEN_WIDTH = 640;
-    SCREEN_HEIGHT = 480;
+    SCREEN_WIDTH = 320;
+    SCREEN_HEIGHT = 240;
 
     bool success = true;
 
@@ -58,26 +58,28 @@ void SDLGraphics::draw_scene(Scene &scene) {
     for (std::list<Image>::iterator it = scene.get_imgs()->begin(); it != scene.get_imgs()->end(); it++) {
         //Where to copy image from
         //TODO: Consider moving this somewhere else.
-        SDL_Rect *src;
+        SDL_Rect src;
         int frames_in_row = it->get_img_width() / it->get_frame_width();
         int theoretical_x = it->get_cur_frame() * it->get_frame_width();
-        int frame_row = theoretical_x / frames_in_row;
-        int frame_col = theoretical_x % frame_row;
-        src->x = frame_col;
-        src->y = frame_row * it->get_frame_height();
-        src->w = it->get_frame_width();
-        src->h = it->get_frame_height();
+        int frame_row = theoretical_x / (frames_in_row * it->get_frame_width());
+        int frame_col = theoretical_x % (it->get_frame_width() * frames_in_row);
+        src.x = frame_col;
+        src.y = frame_row * it->get_frame_height();
+        src.w = it->get_frame_width();
+        src.h = it->get_frame_height();
 
         //Where to draw image
-        SDL_Rect *dst;
-        dst->x = it->get_x();
-        dst->y = it->get_y();
+        SDL_Rect dst;
+        dst.x = it->get_x();
+        dst.y = it->get_y();
+        dst.w = it->get_frame_width();
+        dst.h = it->get_frame_height();
 
         //Load image
         loading_tex = load_texture(*it->get_path());
 
         //Copy image to "canvas"
-        SDL_RenderCopy(gRenderer, loading_tex, src, dst);
+        SDL_RenderCopy(gRenderer, loading_tex, &src, &dst);
     }
 
     //Free stuff
@@ -85,7 +87,6 @@ void SDLGraphics::draw_scene(Scene &scene) {
 
     //Make magic happen
     SDL_RenderPresent(gRenderer);
-    SDL_UpdateWindowSurface(gWindow);
 }
 
 

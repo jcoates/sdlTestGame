@@ -2,6 +2,7 @@
 // Created by Joshua Coates on 5/15/15.
 //
 
+#include <unistd.h>
 #include "sdl_graphics.h"
 
 bool SDLGraphics::init() {
@@ -9,7 +10,7 @@ bool SDLGraphics::init() {
     SCREEN_WIDTH = 640;
     SCREEN_HEIGHT = 480;
 
-    bool success = false;
+    bool success = true;
 
     //Initialize Window
     if (SDL_Init(SDL_INIT_VIDEO) == 0) {
@@ -18,12 +19,17 @@ bool SDLGraphics::init() {
                                    SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
         if (gWindow != NULL) {
+            //Initialize PNG loading
             int imgFlags = IMG_INIT_PNG;
-            if (IMG_Init(imgFlags) & imgFlags) {
-                gWindowSurface = SDL_GetWindowSurface(gWindow);
-                success = true;
-            } else {
+            if (!(IMG_Init(imgFlags) & imgFlags)) {
                 printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+                success = false;
+            }
+
+            //Initialize Renderer
+            gRenderer = SDL_CreateRenderer(gWindow, -1, 0);
+            if (gRenderer == NULL) {
+                printf("SDL could not create renderer. SDL_Error: %s\n", SDL_GetError());
                 success = false;
             }
         }
@@ -39,13 +45,53 @@ bool SDLGraphics::init() {
     return success;
 }
 
-void SDLGraphics::draw_scene(SDL_Surface &scene) {
-    SDL_BlitSurface(&scene, NULL, gWindowSurface, NULL);
+void SDLGraphics::draw_scene(Scene &scene) {
+
+    //Clear previous scene
+    SDL_RenderClear(gRenderer);
+
+    //Set up background
+    SDL_Texture *loading_tex = load_texture(scene.get_bg().img_data->get_image());
+    SDL_RenderCopy(gRenderer, loading_tex, NULL, NULL);
+
+    //Set up images on top of background
+    for (std::list<Image>::iterator it = scene.get_imgs()->begin(); it != scene.get_imgs()->end(); it++) {
+        //Where to copy image from
+        SDL_Rect *src;
+        int frames_in_row = it->img_data->get_img_width() / it->img_data->get_frame_width();
+        int theoretical_x = it->get_cur_frame() * it->img_data->get_frame_width();
+        int frame_row = theoretical_x / frames_in_row;
+        int frame_col = theoretical_x % frame_row;
+        src->x = frame_col;
+        src->y = frame_row * it->img_data->get_frame_height();
+        src->w = it->img_data->get_frame_width();
+        src->h = it->img_data->get_frame_height();
+
+        //Where to draw image
+        SDL_Rect *dst;
+        dst->x = it->get_x();
+        dst->y = it->get_y();
+
+        //Load image
+        loading_tex = load_texture(it->img_data->get_image());
+
+        //Copy image to "canvas"
+        SDL_RenderCopy(gRenderer, loading_tex, src, dst);
+    }
+
+    //Free stuff
+    SDL_DestroyTexture(loading_tex);
+
+    //Make magic happen
+    SDL_RenderPresent(gRenderer);
     SDL_UpdateWindowSurface(gWindow);
 }
 
 
 void SDLGraphics::shutdown() {
+
+    //Destroy Renderer
+    SDL_DestroyRenderer(gRenderer);
 
     //Destroy Window & Window Surface
     SDL_DestroyWindow(gWindow);
@@ -56,28 +102,27 @@ void SDLGraphics::shutdown() {
 }
 
 //Note: If this fails, will return NULL POINTER!!!
-SDL_Surface *SDLGraphics::load_surface(std::string path) {
+SDL_Texture *SDLGraphics::load_texture(std::string path) {
     //Stores optimized surface
-    SDL_Surface *optimizedSurface = NULL;
+    SDL_Texture *tex = NULL;
 
     //Stores initial surface
-    printf(path.c_str());
     SDL_Surface *loadedSurface = IMG_Load(path.c_str());
     if (loadedSurface != NULL) {
-        optimizedSurface = SDL_ConvertSurface(loadedSurface, gWindowSurface->format, NULL);
+        tex = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 
-        if (optimizedSurface == NULL) {
-            printf("Unable to optimize image %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
+        if (tex == NULL) {
+            printf("Unable to create texture from image %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
         }
 
-        //Conversion uses optimizedSurface
+        //Done with this
         SDL_FreeSurface(loadedSurface);
     }
     else {
         printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
     }
 
-    return optimizedSurface;
+    return tex;
 }
 
 void SDLGraphics::free_surface(SDL_Surface &s) {

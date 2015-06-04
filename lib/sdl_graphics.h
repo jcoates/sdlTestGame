@@ -9,11 +9,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 #include <string>
+#include "scene.h"
 
 class SDLGraphics {
 private:
     SDL_Window *gWindow;
-    SDL_Surface *gWindowSurface;
+    SDL_Renderer *gRenderer;
     int SCREEN_WIDTH;
     int SCREEN_HEIGHT;
 public:
@@ -29,7 +30,7 @@ public:
      *
      * @arg scene the scene to draw
      */
-    void draw_scene(SDL_Surface &scene);
+    void draw_scene(Scene &scene);
 
     /**
      * shuts down the graphics engine.
@@ -37,12 +38,12 @@ public:
     void shutdown();
 
     /**
-     * loads a surface and optimizes it for the screen
+     * loads an image to a texture
      *
      * @arg path the path to the image to load
      * @retval the pointer to the image, or null if the load failed
      */
-    SDL_Surface *load_surface(std::string path);
+    SDL_Texture *load_texture(std::string path);
 
     /**
      * frees a provided surface

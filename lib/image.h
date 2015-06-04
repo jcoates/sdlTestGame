@@ -7,15 +7,17 @@
 
 #include "image_data.h"
 
-class Image : public ImageData {
+class Image {
 private:
     int x;
     int y;
     int cur_frame;
 public:
-    Image(ImageData img_data, int x, int y);
+    ImageData *img_data;
 
-    Image(ImageData img_data, int x, int y, int cur_frame);
+    Image(ImageData *img_data, int x, int y);
+
+    Image(ImageData *img_data, int x, int y, int cur_frame);
 
     //Getters:
     int get_x();

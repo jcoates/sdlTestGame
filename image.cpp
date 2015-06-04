@@ -5,23 +5,19 @@
 
 #include "image.h"
 
-Image::Image(ImageData img_data, int x, int y) :
-        ImageData(img_data.get_image(), img_data.get_img_width(), img_data.get_img_height()),
-        x(x),
-        y(y),
-        cur_frame(0) { }
+Image::Image(ImageData *i, int i_x, int i_y) {
+    img_data = i;
+    x = i_x;
+    y = i_y;
+    cur_frame = 0;
+}
 
-
-Image::Image(ImageData img_data, int x, int y, int cur_frame) :
-        ImageData(img_data.get_image(),
-                  img_data.get_img_width(),
-                  img_data.get_img_height(),
-                  img_data.get_num_frames(),
-                  img_data.get_frame_width(),
-                  img_data.get_frame_height()),
-        x(x),
-        y(y),
-        cur_frame(cur_frame) { }
+Image::Image(ImageData *i, int i_x, int i_y, int frame) {
+    img_data = i;
+    x = i_x;
+    y = i_y;
+    cur_frame = frame;
+}
 
 //Getters:
 int Image::get_x() {

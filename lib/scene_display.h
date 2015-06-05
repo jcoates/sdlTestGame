@@ -8,13 +8,13 @@
 #include <list>
 #include "image.h"
 
-class Scene {
+class SceneDisplay {
 private:
     Image background;
     std::list<Image> images;
 public:
-    Scene(Image bg);
-    Scene(Image bg, std::list<Image> imgs);
+    SceneDisplay(Image bg);
+    SceneDisplay(Image bg, std::list<Image> imgs);
     Image* get_bg();
     std::list<Image> *get_imgs();
     void add_image(Image new_img);

@@ -45,7 +45,7 @@ bool SDLGraphics::init() {
     return success;
 }
 
-void SDLGraphics::draw_scene(Scene &scene) {
+void SDLGraphics::draw_scene(SceneDisplay &scene) {
 
     //Clear previous scene
     SDL_RenderClear(gRenderer);

@@ -9,7 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 #Source files
-set(SOURCE_FILES main.cpp sdl_graphics.cpp image_data.cpp image.cpp scene.cpp)
+set(SOURCE_FILES main.cpp sdl_graphics.cpp image_data.cpp image.cpp scene_display.cpp)
 
 #include files
 include_directories(lib)

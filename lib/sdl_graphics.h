@@ -9,7 +9,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 #include <string>
-#include "scene.h"
+#include "scene_display.h"
 
 class SDLGraphics {
 private:
@@ -39,7 +39,7 @@ public:
      *
      * @arg scene the scene to draw
      */
-    void draw_scene(Scene &scene);
+    void draw_scene(SceneDisplay &scene);
 
     /**
      * shuts down the graphics engine.

@@ -19,7 +19,7 @@ int main() {
     ImageData ex_setting = ImageData("res/settings_trans.png", 160, 50);
     Image button = Image(&ex_setting, 80, 180);
 
-    Scene exs = Scene(background);
+    SceneDisplay exs = SceneDisplay(background);
     exs.add_image(button);
 
 

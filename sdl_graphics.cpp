@@ -50,6 +50,8 @@ void SDLGraphics::draw_scene(SceneDisplay &scene) {
     //Clear previous scene
     SDL_RenderClear(gRenderer);
 
+    //TODO: don't reload image literally every frame
+
     //Set up background
     SDL_Texture *loading_tex = load_texture(*scene.get_bg()->get_path());
     SDL_RenderCopy(gRenderer, loading_tex, NULL, NULL);

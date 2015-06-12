@@ -6,23 +6,25 @@
 #ifndef TESTSTRUCTUREDGAME_GAME_EVENTS_H
 #define TESTSTRUCTUREDGAME_GAME_EVENTS_H
 
-enum class event_type {
-    //Window Events
-            WINDOW_FOCUS,
+enum class hw_event_type {
+    NONE,
+
+    WINDOW_FOCUS,
     WINDOW_UNFOCUS,
     WINDOW_CLOSE,
     WINDOW_MINIMIZE,
     WINDOW_RESTORE,
     WINDOW_MAXIMIZE,
-    WINDOW_RESIZE,
-    //Mouse Events
-            MOUSE_DOWN,
+
+    MOUSE_DOWN,
     MOUSE_UP,
     MOUSE_MOVE,
+
+    QUIT,
 };
 
 //Additional data required by events
-union event_data {
+union hw_event_data {
     //for mouse events
     struct {
         int x;
@@ -35,19 +37,21 @@ union event_data {
     };
 };
 
-class Event {
+class HardwareEvent {
 public:
-    Event(event_type t, event_data d);
+    HardwareEvent();
 
-    Event(event_type t);
+    HardwareEvent(hw_event_type t, hw_event_data d);
 
-    bool is_type(event_type t);
+    HardwareEvent(hw_event_type t);
 
-    event_data *get_data();
+    bool is_type(hw_event_type t);
+
+    hw_event_data *get_data();
 
 private:
-    event_type type;
-    event_data data;
+    hw_event_type type;
+    hw_event_data data;
 };
 
 #endif //TESTSTRUCTUREDGAME_GAME_EVENTS_H

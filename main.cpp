@@ -1,8 +1,8 @@
 #include <iostream>
-#include <SDL2/SDL.h>
 
 
 #include "sdl_graphics.h"
+#include "sdl_events.h"
 
 using namespace std;
 
@@ -10,6 +10,8 @@ int main() {
     //Initialize SDL_Graphics
     SDLGraphics graphics;
     graphics.init();
+
+    SDLEventManager eventsManager;
 
     //Create example scene
     //TODO: try putting ImageData as a const into a separate file
@@ -26,16 +28,15 @@ int main() {
 
     //TODO: Move game running stuff into a separate place
     //Mock up a game loop
+    HardwareEvent *e = new HardwareEvent();
     bool quit = false;
-    SDL_Event e;
 
     //While application is running
     while (!quit) {
         graphics.draw_scene(exs);
         //Handle events on queue
-        while (SDL_PollEvent(&e) != 0) {
-            //User requests quit
-            if (e.type == SDL_QUIT) {
+        if (eventsManager.poll(e)) {
+            if (e->is_type(hw_event_type::QUIT)) {
                 quit = true;
             }
         }

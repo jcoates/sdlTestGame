@@ -6,28 +6,29 @@
 #include "sdl_events.h"
 
 bool SDLEventManager::poll(HardwareEvent *e) {
-    if (SDL_PollEvent(&event) == 0) {
+    if (SDL_PollEvent(&event) != 0) {
         hw_event_data *ed = new hw_event_data;
         switch (event.type) {
             case SDL_QUIT:
                 *e = HardwareEvent(hw_event_type::QUIT);
-                return true;
+                break;
             case SDL_MOUSEMOTION:
                 ed->x = event.button.x;
                 ed->y = event.button.y;
                 *e = HardwareEvent(hw_event_type::MOUSE_MOVE, *ed);
-                return true;
+                break;
             case SDL_MOUSEBUTTONDOWN:
                 ed->x = event.button.x;
                 ed->y = event.button.y;
                 *e = HardwareEvent(hw_event_type::MOUSE_DOWN, *ed);
-                return true;
+                break;
             case SDL_MOUSEBUTTONUP:
                 ed->x = event.button.x;
                 ed->y = event.button.y;
                 *e = HardwareEvent(hw_event_type::MOUSE_UP, *ed);
-                return true;
+                break;
         }
+        return true;
     } else {
         *e = HardwareEvent();
         return false;
